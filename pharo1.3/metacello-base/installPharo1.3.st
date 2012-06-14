@@ -10,6 +10,7 @@ SmalltalkImage current saveAs: 'metacello-base'.
 "patch RB formatter ... custom indent and force Symbol formatting to alway use quated form"
 #('RBLiteralToken-storeOn.st' 'RBConfigurableFormatter class-initialize.st') do: [:filename |
         FileStream oldFileNamed: installerPath, '/', filename do: [:fileStream | fileStream fileIn ]].
+RBConfigurableFormatter initialize.
 
 "My settings"
 SystemBrowser default: OBSystemBrowserAdaptor.
@@ -34,19 +35,23 @@ Gofer new
         load.
 ((Smalltalk at: #ConfigurationOfMetacello) project version: '1.0-beta.32') load: 'batch'.
 
-((Smalltalk at: #ConfigurationOfFileTree) project version: '1.0') load.  
+((Smalltalk at: #ConfigurationOfFileTree) project version: '1.0') load.
 
 "Install latest Metacello and FileTree from git"
 Gofer new
-        repository: ((Smalltalk at: #MCFileTreeRepository) new directory: 
+        repository: ((Smalltalk at: #MCFileTreeRepository) new directory:
                     (FileDirectory on: pharoGitPath, '/filetree/repository/'));
         package: 'MonticelloFileTree-Core';
         load.
+
+MetacelloProjectRegistration primeRegistryFromImage.
 
 (Smalltalk at: #Metacello) new
   baseline: 'Metacello';
   repository: 'filetree://', gitPath, '/metacello-work/repository';
   load: 'ALL'.
+
+SystemOrganization sortCategories.
 
 "save image"
 WorldState addDeferredUIMessage: [
