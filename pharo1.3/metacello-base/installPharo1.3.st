@@ -44,7 +44,7 @@ Gofer new
         package: 'MonticelloFileTree-Core';
         load.
 
-MetacelloProjectRegistration primeRegistryFromImage.
+(Smalltalk at: #MetacelloProjectRegistration) perform: #primeRegistryFromImage.
 
 (Smalltalk at: #Metacello) new
   baseline: 'Metacello';
